@@ -12,6 +12,9 @@ class Strings{
   static const String kLandE = 'Landlords email';
   static const String kTenantA = 'Tenant address';
   static const String kBusN = 'Business name';
+  static const String kName = 'Name';
+  static const String kEmail = 'Email';
+  static const String kPhn = 'Phone no.';
   static const String kMerStore = 'Merchant store ownership';
   static const String kOwed = 'Has owed in previous years';
   static const String kYes = 'Yes';

@@ -73,8 +73,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 SizedBox(height: 15.h,),
                 FormWidget(text: Strings.kName, hText: 'name', controller: _residentialAddressController),
                 SizedBox(height: 10.h,),
-                FormWidget(text: Strings.kName, hText: 'name', controller: _residentialAddressController),
-                SizedBox(height: 10.h,),
                 FormWidget(text: Strings.kEmail, hText: 'Email', controller: _residentialAddressController),
                 SizedBox(height: 10.h,),
                 FormWidget(text: Strings.kPhn, hText: 'Phone no.', controller: _residentialAddressController),

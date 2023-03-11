@@ -22,7 +22,7 @@ class Strings{
   static const String kMerchantAmount = 'Merchant Approved amount';
   static const String kDoes = 'Does merchant owns a store';
   static const String kClientA = 'Clients Address';
-  static const String kClientApart = "Client's apartment status";
+  static const String kClientApart = "Ownership status";
   static const String kItem = "Purchased item in client's possession?";
   static const String kAfford = 'Can client afford purchased item?';
 }

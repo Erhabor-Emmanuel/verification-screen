@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../const/styles.dart';
 
-class FormWidget extends StatelessWidget {
+
+class FormNum extends StatelessWidget {
   final String text;
   final String hText;
   final TextEditingController? controller;
-  const FormWidget({
+  final Function(String)? check;
+  const FormNum({
     required this.text,
     required this.hText,
     this.controller,
+    this.check,
     Key? key}) : super(key: key);
 
   @override
@@ -19,19 +22,25 @@ class FormWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 15.0.r, bottom: 7.0.r),
+          padding: EdgeInsets.only(top: 10.0.r, bottom: 7.0.r),
           child: Text(text, style: kFirstN,),
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          height: 42.h,
+          height: 46.h,
           decoration: BoxDecoration(
             color: kWhite,
             borderRadius: BorderRadius.circular(12.0.r),
           ),
           child: TextFormField(
             controller: controller,
+            scrollPadding: EdgeInsets.all(80.r),
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
             decoration:  InputDecoration(
+              prefixIconConstraints: const BoxConstraints(maxWidth: 40),
               fillColor: kWhite,
               hintStyle: kDetailAccount,
               hintText: hText,
@@ -40,10 +49,11 @@ class FormWidget extends StatelessWidget {
                 borderSide: BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: kBlack),
+                borderSide: const BorderSide(color: kBlack),
                 borderRadius: BorderRadius.circular(12.0.r),
               ),
             ),
+            onChanged: check,
           ),
         ),
       ],

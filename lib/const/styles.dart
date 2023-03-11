@@ -14,7 +14,7 @@ const Color kDivide = Color(0xffACB5C8);
 const Color kLoanCard = Color(0xffEBEFF8);
 const Color kLoginB = Color(0xff130F26);
 const Color kLoginColor = Color(0xffEBF0F8);
-
+const Color kSafeGreen = Color(0xff2EBC6A);
 
 
 

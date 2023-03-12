@@ -262,7 +262,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 SizedBox(height: 10.h,),
                 FormWidget(text: Strings.kClientA, hText: 'Client Address', controller: _residentialAddressController),
                 SizedBox(height: 10.h,),
-                Text('Clients apartment status', style: kFirstN,),
+                Text('Ownership status', style: kFirstN,),
                 SizedBox(height: 5.h,),
                 DropdownButtonHideUnderline(
                   child: Container(

@@ -11,8 +11,10 @@ class VerificationRepo extends ChangeNotifier{
   //Setters
   bool _isLoading = false;
   String _resMessage = '';
+  int _resStatusCode = 0;
 
   //Getters
+  int get resStatusCode => _resStatusCode;
   bool get isLoading => _isLoading;
   String get resMessage => _resMessage;
 
@@ -36,7 +38,7 @@ class VerificationRepo extends ChangeNotifier{
     _isLoading = true;
     notifyListeners();
 
-    Uri url = Uri.parse('https://api-qa.rexafrica.com/api/v1/login');
+    Uri url = Uri.parse('https://ccendpoints.herokuapp.com/api/v2/create-user-info');
 
     var body = {
       'avisId': "3342",
@@ -86,6 +88,7 @@ class VerificationRepo extends ChangeNotifier{
       debugPrint(' If response ran ===> ${result.message}');
       _isLoading = false;
       _resMessage = responseData['message'];
+      _resStatusCode = response.statusCode;
       notifyListeners();
       return result;
     }else{

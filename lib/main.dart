@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:verification/repository/remote_data/queries.dart';
 import 'package:verification/verification/verification.dart';
 
 void main() {
@@ -15,12 +17,17 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
         designSize:  const Size(360, 690),
         builder: (BuildContext context, child){
-        return MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => VerificationRepo()),
+          ],
+          child: MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: const VerificationScreen(),
           ),
-          home: const VerificationScreen(),
         );
       }
     );

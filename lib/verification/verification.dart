@@ -4,12 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../common_widgets/LoginButton.dart';
 import '../common_widgets/formNo.dart';
 import '../common_widgets/formWidget.dart';
 import '../const/assets.dart';
 import '../const/strings.dart';
 import '../const/styles.dart';
+import '../repository/remote_data/queries.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({Key? key}) : super(key: key);
@@ -51,10 +53,27 @@ class _VerificationScreenState extends State<VerificationScreen> {
     }
   }
 
-  TextEditingController _residentialAddressController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _landEmailController = TextEditingController();
+  TextEditingController _landPhController = TextEditingController();
+  TextEditingController _rentValueController = TextEditingController();
+  TextEditingController _tenantAddressController = TextEditingController();
+  TextEditingController _businessNameController = TextEditingController();
+  TextEditingController _approvedAmountController = TextEditingController();
+  TextEditingController _clientAddressController = TextEditingController();
+
+
   bool _checkBox = false;
   String? auto;
+  String? autoOne;
+  String? autoTwo;
   bool _nextCheckBox = false;
+  bool _nextCheckBoxOne = false;
+  bool _checkBoxOne = false;
+  bool _checkBoxTwo = false;
+  bool _nextCheckBoxTwo = false;
 
   @override
   Widget build(BuildContext context) {
@@ -71,15 +90,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 SizedBox(height: 5.h,),
                 Text(Strings.UpdateProfile, style: kFeatureStyle,),
                 SizedBox(height: 15.h,),
-                FormWidget(text: Strings.kName, hText: 'name', controller: _residentialAddressController),
+                FormWidget(text: Strings.kName, hText: 'name', controller: _nameController),
                 SizedBox(height: 10.h,),
-                FormWidget(text: Strings.kEmail, hText: 'Email', controller: _residentialAddressController),
+                FormWidget(text: Strings.kEmail, hText: 'Email', controller: _emailController),
                 SizedBox(height: 10.h,),
-                FormWidget(text: Strings.kPhn, hText: 'Phone no.', controller: _residentialAddressController),
+                FormWidget(text: Strings.kPhn, hText: 'Phone no.', controller: _phoneController),
                 SizedBox(height: 10.h,),
-                FormWidget(text: Strings.kLandE, hText: 'email', controller: _residentialAddressController),
+                FormWidget(text: Strings.kLandE, hText: 'email', controller: _landEmailController),
                 SizedBox(height: 10.h,),
-                const FormNum(text: Strings.kLandN, hText: 'Phone no.',),
+                FormNum(text: Strings.kLandN, hText: 'Phone no.', controller: _landPhController,),
                 SizedBox(height: 10.h,),
                 Text('Apartment Type', style: kFirstN,),
                 SizedBox(height: 5.h,),
@@ -179,7 +198,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 //   ),
                 // ),
                 SizedBox(height: 10.h,),
-                FormWidget(text: Strings.kRentV, hText: 'answer', controller: _residentialAddressController),
+                FormWidget(text: Strings.kRentV, hText: 'answer', controller: _rentValueController),
                 SizedBox(height: 10.h,),
                 Text(Strings.kOwed, style: kFirstN),
                 Row(
@@ -254,13 +273,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   ],
                 ),
                 SizedBox(height: 10.h,),
-                FormWidget(text: Strings.kTenantA, hText: 'address', controller: _residentialAddressController),
+                FormWidget(text: Strings.kTenantA, hText: 'address', controller: _tenantAddressController),
                 SizedBox(height: 10.h,),
-                FormWidget(text: Strings.kBusN, hText: 'Business name', controller: _residentialAddressController),
+                FormWidget(text: Strings.kBusN, hText: 'Business name', controller: _businessNameController),
                 SizedBox(height: 10.h,),
-                const FormNum(text: Strings.kMerchantAmount, hText: 'approved amount',),
+                FormNum(text: Strings.kMerchantAmount, hText: 'approved amount', controller: _approvedAmountController,),
                 SizedBox(height: 10.h,),
-                FormWidget(text: Strings.kClientA, hText: 'Client Address', controller: _residentialAddressController),
+                FormWidget(text: Strings.kClientA, hText: 'Client Address', controller: _clientAddressController),
                 SizedBox(height: 10.h,),
                 Text('Ownership status', style: kFirstN,),
                 SizedBox(height: 5.h,),
@@ -310,14 +329,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             children: [
                               Text(Strings.kYes, style: kFirstN),
                               Checkbox(
-                                value: _checkBox,
+                                value: _checkBoxOne,
                                 checkColor: kWhite,
                                 activeColor: kSafeGreen,
                                 onChanged: (bool? value){
-                                  if(value != null && _nextCheckBox == false){
+                                  if(value != null && _nextCheckBoxOne == false){
                                     setState(() {
-                                      _checkBox = value;
-                                      auto = 'Yes';
+                                      _checkBoxOne = value;
+                                      autoOne = 'Yes';
                                     });
                                   }
                                 },
@@ -343,14 +362,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             children: [
                               Text(Strings.kNo, style: kFirstN),
                               Checkbox(
-                                value: _nextCheckBox,
+                                value: _nextCheckBoxOne,
                                 checkColor: kWhite,
                                 activeColor: kSafeGreen,
                                 onChanged: (bool? value){
-                                  if(value != null && _checkBox == false){
+                                  if(value != null && _checkBoxOne == false){
                                     setState(() {
-                                      _nextCheckBox = value;
-                                      auto = 'No';
+                                      _nextCheckBoxOne = value;
+                                      autoOne = 'No';
                                     });
                                   }
                                 },
@@ -384,14 +403,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             children: [
                               Text(Strings.kYes, style: kFirstN),
                               Checkbox(
-                                value: _checkBox,
+                                value: _checkBoxTwo,
                                 checkColor: kWhite,
                                 activeColor: kSafeGreen,
                                 onChanged: (bool? value){
-                                  if(value != null && _nextCheckBox == false){
+                                  if(value != null && _nextCheckBoxTwo == false){
                                     setState(() {
-                                      _checkBox = value;
-                                      auto = 'Yes';
+                                      _checkBoxTwo = value;
+                                      autoTwo = 'Yes';
                                     });
                                   }
                                 },
@@ -417,14 +436,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             children: [
                               Text(Strings.kNo, style: kFirstN),
                               Checkbox(
-                                value: _nextCheckBox,
+                                value: _nextCheckBoxTwo,
                                 checkColor: kWhite,
                                 activeColor: kSafeGreen,
                                 onChanged: (bool? value){
-                                  if(value != null && _checkBox == false){
+                                  if(value != null && _checkBoxTwo == false){
                                     setState(() {
-                                      _nextCheckBox = value;
-                                      auto = 'No';
+                                      _nextCheckBoxTwo = value;
+                                      autoTwo = 'No';
                                     });
                                   }
                                 },
@@ -437,7 +456,33 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   ],
                 ),
                 SizedBox(height: 35.h,),
-                LoginB(text: Strings.kConfirm, style: kLoginButton)
+                Consumer<VerificationRepo>(
+                  builder: (context, verify, child) {
+                    return GestureDetector(
+                      onTap: ()async{
+                        await verify.verifyUsers(
+                            name: _nameController.text,
+                            email: _emailController.text,
+                            phone: _phoneController.text,
+                            landord_email: _landEmailController.text,
+                            landlord_phone: _landPhController.text,
+                            apartment_type: myGender.toString(),
+                            rent_value: _rentValueController.text,
+                            owed_previous: auto.toString(),
+                            tenant_address: _tenantAddressController.text,
+                            business_name: _businessNameController.text,
+                            approve_amount: _approvedAmountController.text,
+                            client_address: _clientAddressController.text,
+                            device_status: autoOne.toString(),
+                            ownership_status: myStatus.toString(),
+                            client_afford: autoTwo.toString(),
+                        );
+                        debugPrint("message:::  ${verify.resMessage}");
+                      },
+                        child: LoginB(text: Strings.kConfirm, style: kLoginButton),
+                    );
+                  }
+                )
               ],
             ),
           ),

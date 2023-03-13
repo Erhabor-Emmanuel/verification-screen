@@ -22,7 +22,7 @@ class VerificationRepo extends ChangeNotifier{
     required String name,
     required String email,
     required String phone,
-    required String landord_email,
+    required String landlord_email,
     required String landlord_phone,
     required String apartment_type,
     required String rent_value,
@@ -41,11 +41,11 @@ class VerificationRepo extends ChangeNotifier{
     Uri url = Uri.parse('https://ccendpoints.herokuapp.com/api/v2/create-user-info');
 
     var body = {
-      'avisId': "3342",
+      'avs_id': "3342",
       'name': name,
       'email': email,
       'phone': phone,
-      'landord_email': landord_email,
+      'landlord_email': landlord_email,
       'landlord_phone': landlord_phone,
       'apartment_type': apartment_type,
       'rent_value': rent_value,
@@ -55,8 +55,8 @@ class VerificationRepo extends ChangeNotifier{
       'approve_amount': approve_amount,
       'client_address': client_address,
       'device_status': device_status,
-      'device_status': ownership_status,
-      'device_status': client_afford,
+      'ownership_status': ownership_status,
+      'client_afford': client_afford,
     };
 
     var jsonBody = json.encode(body);

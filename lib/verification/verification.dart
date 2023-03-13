@@ -9,6 +9,7 @@ import '../common_widgets/LoginButton.dart';
 import '../common_widgets/formNo.dart';
 import '../common_widgets/formWidget.dart';
 import '../const/assets.dart';
+import '../const/snackbar.dart';
 import '../const/strings.dart';
 import '../const/styles.dart';
 import '../repository/remote_data/queries.dart';
@@ -94,7 +95,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 SizedBox(height: 10.h,),
                 FormWidget(text: Strings.kEmail, hText: 'Email', controller: _emailController),
                 SizedBox(height: 10.h,),
-                FormWidget(text: Strings.kPhn, hText: 'Phone no.', controller: _phoneController),
+                FormNum(text: Strings.kPhn, hText: 'Phone no.', controller: _phoneController),
                 SizedBox(height: 10.h,),
                 FormWidget(text: Strings.kLandE, hText: 'email', controller: _landEmailController),
                 SizedBox(height: 10.h,),
@@ -198,7 +199,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 //   ),
                 // ),
                 SizedBox(height: 10.h,),
-                FormWidget(text: Strings.kRentV, hText: 'answer', controller: _rentValueController),
+                FormNum(text: Strings.kRentV, hText: 'answer', controller: _rentValueController),
                 SizedBox(height: 10.h,),
                 Text(Strings.kOwed, style: kFirstN),
                 Row(
@@ -455,7 +456,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 35.h,),
+                SizedBox(height: 25.h,),
                 Consumer<VerificationRepo>(
                   builder: (context, verify, child) {
                     return GestureDetector(
@@ -464,7 +465,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             name: _nameController.text,
                             email: _emailController.text,
                             phone: _phoneController.text,
-                            landord_email: _landEmailController.text,
+                          landlord_email: _landEmailController.text,
                             landlord_phone: _landPhController.text,
                             apartment_type: myGender.toString(),
                             rent_value: _rentValueController.text,
@@ -478,11 +479,19 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             client_afford: autoTwo.toString(),
                         );
                         debugPrint("message:::  ${verify.resMessage}");
+                        if(verify.resStatusCode == 200){
+                          showingSnacks(context, verify.resMessage);
+                          // Future.delayed(Duration(seconds: 1));
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => const BottomNavBar()));
+                        }else{
+                          showingErrorSnacks(context, verify.resMessage);
+                        }
                       },
                         child: LoginB(text: Strings.kConfirm, style: kLoginButton),
                     );
                   }
-                )
+                ),
+                SizedBox(height: 25.h,),
               ],
             ),
           ),

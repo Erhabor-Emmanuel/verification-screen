@@ -487,7 +487,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           showingErrorSnacks(context, verify.resMessage);
                         }
                       },
-                        child: LoginB(text: Strings.kConfirm, style: kLoginButton),
+                        child: verify.isLoading? const Center(child: CircularProgressIndicator(color: Colors.blue,)):
+                        LoginB(text: Strings.kConfirm, style: kLoginButton),
                     );
                   }
                 ),

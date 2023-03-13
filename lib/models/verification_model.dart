@@ -1,117 +1,109 @@
-// To parse this JSON data, do
-//
-//     final verificationModel = verificationModelFromJson(jsonString);
+class VerifyModel {
+  String? message;
+  Data? data;
 
-import 'dart:convert';
+  VerifyModel({this.message, this.data});
 
-VerificationModel verificationModelFromJson(String str) => VerificationModel.fromJson(json.decode(str));
+  VerifyModel.fromJson(Map<String, dynamic> json) {
+    message = json['message'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+  }
 
-String verificationModelToJson(VerificationModel data) => json.encode(data.toJson());
-
-class VerificationModel {
-  VerificationModel({
-    required this.message,
-    required this.data,
-  });
-
-  String message;
-  Data data;
-
-  factory VerificationModel.fromJson(Map<String, dynamic> json) => VerificationModel(
-    message: json["message"],
-    data: Data.fromJson(json["data"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "message": message,
-    "data": data.toJson(),
-  };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
 }
 
 class Data {
-  Data({
-    required this.id,
-    required this.avsId,
-    required this.name,
-    required this.email,
-    required this.phone,
-    required this.landlordEmail,
-    required this.landlordPhone,
-    required this.apartmentType,
-    required this.rentValue,
-    required this.owedPrevious,
-    required this.tenantAddress,
-    required this.businessName,
-    required this.approveAmount,
-    required this.clientAddress,
-    required this.deviceStatus,
-    required this.ownershipStatus,
-    required this.clientAfford,
-    required this.updatedAt,
-    required this.createdAt,
-  });
+  int? id;
+  String? avsId;
+  String? name;
+  String? email;
+  String? phone;
+  String? landlordEmail;
+  String? landlordPhone;
+  String? apartmentType;
+  String? rentValue;
+  String? owedPrevious;
+  String? tenantAddress;
+  String? businessName;
+  String? approveAmount;
+  String? clientAddress;
+  String? deviceStatus;
+  String? ownershipStatus;
+  String? clientAfford;
+  String? updatedAt;
+  String? createdAt;
 
-  int id;
-  String avsId;
-  String name;
-  String email;
-  String phone;
-  String landlordEmail;
-  String landlordPhone;
-  String apartmentType;
-  String rentValue;
-  String owedPrevious;
-  String tenantAddress;
-  String businessName;
-  String approveAmount;
-  String clientAddress;
-  String deviceStatus;
-  String ownershipStatus;
-  String clientAfford;
-  DateTime updatedAt;
-  DateTime createdAt;
+  Data(
+      {this.id,
+        this.avsId,
+        this.name,
+        this.email,
+        this.phone,
+        this.landlordEmail,
+        this.landlordPhone,
+        this.apartmentType,
+        this.rentValue,
+        this.owedPrevious,
+        this.tenantAddress,
+        this.businessName,
+        this.approveAmount,
+        this.clientAddress,
+        this.deviceStatus,
+        this.ownershipStatus,
+        this.clientAfford,
+        this.updatedAt,
+        this.createdAt});
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-    id: json["id"],
-    avsId: json["avs_id"],
-    name: json["name"],
-    email: json["email"],
-    phone: json["phone"],
-    landlordEmail: json["landlord_email"],
-    landlordPhone: json["landlord_phone"],
-    apartmentType: json["apartment_type"],
-    rentValue: json["rent_value"],
-    owedPrevious: json["owed_previous"],
-    tenantAddress: json["tenant_address"],
-    businessName: json["business_name"],
-    approveAmount: json["approve_amount"],
-    clientAddress: json["client_address"],
-    deviceStatus: json["device_status"],
-    ownershipStatus: json["ownership_status"],
-    clientAfford: json["client_afford"],
-    updatedAt: DateTime.parse(json["updatedAt"]),
-    createdAt: DateTime.parse(json["createdAt"]),
-  );
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    avsId = json['avs_id'];
+    name = json['name'];
+    email = json['email'];
+    phone = json['phone'];
+    landlordEmail = json['landlord_email'];
+    landlordPhone = json['landlord_phone'];
+    apartmentType = json['apartment_type'];
+    rentValue = json['rent_value'];
+    owedPrevious = json['owed_previous'];
+    tenantAddress = json['tenant_address'];
+    businessName = json['business_name'];
+    approveAmount = json['approve_amount'];
+    clientAddress = json['client_address'];
+    deviceStatus = json['device_status'];
+    ownershipStatus = json['ownership_status'];
+    clientAfford = json['client_afford'];
+    updatedAt = json['updatedAt'];
+    createdAt = json['createdAt'];
+  }
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "avs_id": avsId,
-    "name": name,
-    "email": email,
-    "phone": phone,
-    "landlord_email": landlordEmail,
-    "landlord_phone": landlordPhone,
-    "apartment_type": apartmentType,
-    "rent_value": rentValue,
-    "owed_previous": owedPrevious,
-    "tenant_address": tenantAddress,
-    "business_name": businessName,
-    "approve_amount": approveAmount,
-    "client_address": clientAddress,
-    "device_status": deviceStatus,
-    "ownership_status": ownershipStatus,
-    "client_afford": clientAfford,
-    "updatedAt": updatedAt.toIso8601String(),
-    "createdAt": createdAt.toIso8601String(),
-  };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['avs_id'] = this.avsId;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['landlord_email'] = this.landlordEmail;
+    data['landlord_phone'] = this.landlordPhone;
+    data['apartment_type'] = this.apartmentType;
+    data['rent_value'] = this.rentValue;
+    data['owed_previous'] = this.owedPrevious;
+    data['tenant_address'] = this.tenantAddress;
+    data['business_name'] = this.businessName;
+    data['approve_amount'] = this.approveAmount;
+    data['client_address'] = this.clientAddress;
+    data['device_status'] = this.deviceStatus;
+    data['ownership_status'] = this.ownershipStatus;
+    data['client_afford'] = this.clientAfford;
+    data['updatedAt'] = this.updatedAt;
+    data['createdAt'] = this.createdAt;
+    return data;
+  }
 }

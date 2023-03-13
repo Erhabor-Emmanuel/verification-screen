@@ -18,7 +18,7 @@ class VerificationRepo extends ChangeNotifier{
   bool get isLoading => _isLoading;
   String get resMessage => _resMessage;
 
-  Future<VerificationModel> verifyUsers ({
+  Future<VerifyModel> verifyUsers ({
     required String name,
     required String email,
     required String phone,
@@ -37,9 +37,7 @@ class VerificationRepo extends ChangeNotifier{
   })async{
     _isLoading = true;
     notifyListeners();
-
     Uri url = Uri.parse('https://ccendpoints.herokuapp.com/api/v2/create-user-info');
-
     var body = {
       'avs_id': "3342",
       'name': name,
@@ -71,34 +69,105 @@ class VerificationRepo extends ChangeNotifier{
       _isLoading = false;
       notifyListeners();
       debugPrint('e================> ${e.toString()}');
+      debugPrint('e================> ${e.toString()}');
       throw Exception('Exception =========> ${e.toString()}');
     }
-    final responseData = jsonDecode(response.body);
-    var bg = Map<String, dynamic>.from(responseData);
-    String Smessage = responseData['message'];
-    debugPrint('responseData ===> $responseData');
-    debugPrint('statusCode ===> ${response.statusCode}');
-    debugPrint('messsage ===> $Smessage');
-    VerificationModel result = VerificationModel.fromJson(responseData);
-    debugPrint("$result");
 
     if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      debugPrint("responseData=========>  $responseData");
+      String Smessage = responseData['message'];
       debugPrint('message ============> $Smessage');
       debugPrint('statusCode ============> ${response.statusCode}');
-      debugPrint(' If response ran ===> ${result.message}');
+
       _isLoading = false;
       _resMessage = responseData['message'];
       _resStatusCode = response.statusCode;
       notifyListeners();
-      return result;
+
     }else{
-      debugPrint('errmessage ============> $Smessage');
-      debugPrint('error message ===> ${result.message}');
+      debugPrint('errorstatusCode ============> ${response.statusCode}');
+      debugPrint('One fo the fields are missing');
       _isLoading = false;
-      _resMessage = responseData['message'];
+      _resStatusCode = response.statusCode;
+      _resMessage = "One fo the fields are missing";
       notifyListeners();
-      return result;
     }
-    return VerificationModel.fromJson(responseData);
+    VerifyModel verifying = VerifyModel();
+    return verifying;
   }
+
+  // Future<VerificationModel> verifyUsers({
+  //   required String name,
+  //   required String email,
+  //   required String phone,
+  //   required String landlord_email,
+  //   required String landlord_phone,
+  //   required String apartment_type,
+  //   required String rent_value,
+  //   required String owed_previous,
+  //   required String tenant_address,
+  //   required String business_name,
+  //   required String approve_amount,
+  //   required String client_address,
+  //   required String device_status,
+  //   required String ownership_status,
+  //   required String client_afford
+  // }) async{
+  //   _isLoading = true;
+  //   notifyListeners();
+  //
+  //   Uri url = Uri.parse('https://ccendpoints.herokuapp.com/api/v2/create-user-info');
+  //
+  //   var body = {
+  //     'avs_id': "3342",
+  //     'name': name,
+  //     'email': email,
+  //     'phone': phone,
+  //     'landlord_email': landlord_email,
+  //     'landlord_phone': landlord_phone,
+  //     'apartment_type': apartment_type,
+  //     'rent_value': rent_value,
+  //     'owed_previous': owed_previous,
+  //     'tenant_address': tenant_address,
+  //     'business_name': business_name,
+  //     'approve_amount': approve_amount,
+  //     'client_address': client_address,
+  //     'device_status': device_status,
+  //     'ownership_status': ownership_status,
+  //     'client_afford': client_afford,
+  //   };
+  //   var jsonBody = json.encode(body);
+  //   http.Response? response;
+  //
+  //     response = await http
+  //         .post(url, body: jsonBody, headers: await Headers.fullHeader)
+  //         .timeout(Duration(seconds: _timeout));
+  //
+  //   final responseData = jsonDecode(response.body);
+  //   VerificationModel result = VerificationModel.fromJson(responseData);
+  //
+  //   if (response.statusCode == 200) {
+  //     final responseData = jsonDecode(response.body);
+  //
+  //     debugPrint("$result");
+  //     String Smessage = responseData['message'];
+  //     debugPrint('responseData ===> $responseData');
+  //     debugPrint('statusCode ===> ${response.statusCode}');
+  //     debugPrint('messsage ===> $Smessage');
+  //     debugPrint('message ============> $Smessage');
+  //     debugPrint('statusCode ============> ${response.statusCode}');
+  //     debugPrint(' If response ran ===> ${result.message}');
+  //     _isLoading = false;
+  //     // _resStatusCode = response.statusCode;
+  //     // _resMessage = responseData['message'];
+  //     notifyListeners();
+  //     return result;
+  //   }else {
+  //   debugPrint('status==========> ${response.statusCode}');
+  //   debugPrint('errrrrrrrrrrrrrrrr');
+  //   // throw Exception(result.message);
+  //   }
+  //   return result;
+  // }
 }

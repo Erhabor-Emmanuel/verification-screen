@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../common_widgets/LoginButton.dart';
 import '../common_widgets/formNo.dart';
 import '../common_widgets/formWidget.dart';
+import '../common_widgets/loginCircular.dart';
 import '../const/assets.dart';
 import '../const/snackbar.dart';
 import '../const/strings.dart';
@@ -487,7 +488,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           showingErrorSnacks(context, verify.resMessage);
                         }
                       },
-                        child: verify.isLoading? const Center(child: CircularProgressIndicator(color: Colors.blue,)):
+                        child: verify.isLoading? LoginCircular(text: '', style: kLoginButton,):
                         LoginB(text: Strings.kConfirm, style: kLoginButton),
                     );
                   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:verification/repository/remote_data/queries.dart';
+import 'package:verification/verification/avisList.dart';
 import 'package:verification/verification/verification.dart';
 
 void main() {
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
-            home: const VerificationScreen(),
+            home: const AvisList(),
           ),
         );
       }

@@ -37,23 +37,7 @@ List<String> Status = [
 ];
 
 class _VerificationScreenState extends State<VerificationScreen> {
-  File? _image;
-  String? base64PersonImage;
 
-  pickImage(ImageSource source) async {
-
-    try{
-      final XFile? image = await ImagePicker().pickImage(source: source, imageQuality: 25);
-      if(image == null) return;
-      final imageTemporary = File(image.path);
-      setState(() {
-        _image = imageTemporary;
-        base64PersonImage = base64Encode(_image!.readAsBytesSync());
-      });
-    } on PlatformException catch (e){
-      debugPrint('$e');
-    }
-  }
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -65,7 +49,44 @@ class _VerificationScreenState extends State<VerificationScreen> {
   TextEditingController _businessNameController = TextEditingController();
   TextEditingController _approvedAmountController = TextEditingController();
   TextEditingController _clientAddressController = TextEditingController();
+  bool enable = false;
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _nameController.addListener(() {
+  //     final enable = _nameController.text.isNotEmpty &&
+  //         _emailController.text.isNotEmpty &&
+  //         _phoneController.text.isNotEmpty &&
+  //         _landEmailController.text.isNotEmpty &&
+  //         _landPhController.text.isNotEmpty &&
+  //         _rentValueController.text.isNotEmpty &&
+  //         _tenantAddressController.text.isNotEmpty &&
+  //         _businessNameController.text.isNotEmpty &&
+  //         _approvedAmountController.text.isNotEmpty &&
+  //         _clientAddressController.text.isNotEmpty? true: false;
+  //     setState(() => this.enable = enable);
+  //   });
+  //   _passwordEditingController.addListener(() {
+  //     final enable = _passwordEditingController.text.isNotEmpty && _emailEditingController.text.isNotEmpty ? true:false;
+  //     setState(() => this.enable = enable);
+  //   });
+  // }
+
+  @override
+  void dispose() {
+    _nameController;
+    _emailController;
+    _phoneController;
+    _landEmailController;
+    _landPhController;
+    _rentValueController;
+    _tenantAddressController;
+    _businessNameController;
+    _approvedAmountController;
+    _clientAddressController;
+    super.dispose();
+  }
 
   bool _checkBox = false;
   String? auto;
@@ -116,7 +137,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       padding: EdgeInsets.only(left: 5.0.r),
                       child: DropdownButton(
                         items: Genders.map((items) {
-                          return DropdownMenuItem<String>(value: items,child: Text(items, style: kDetailAccount,),);
+                          return DropdownMenuItem<String>(value: items,child: Text(items, style: kFirstN,),);
                         }).toList(),
                         value: myGender,
                         onChanged: (value){
@@ -128,77 +149,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     ),
                   ),
                 ),
-                // SizedBox(height: 15.h,),
-                // Text(Strings.kProfileP, style: kFirstN),
-                // SizedBox(height: 7.h,),
-                // SizedBox(
-                //   width: MediaQuery.of(context).size.width,
-                //   height: 180.0.h,
-                //   child: Column(
-                //     children: [
-                //       Container(
-                //         width: MediaQuery.of(context).size.width -10,
-                //         height: 120.h,
-                //         color: kSignup,
-                //         child: base64PersonImage != null ? Image.file(_image!, fit: BoxFit.cover,) :
-                //         Image.asset(Assets.group, fit: BoxFit.cover,),
-                //       ),
-                //       Padding(
-                //         padding: EdgeInsets.only(left: 5.0.r),
-                //         child: IntrinsicHeight(
-                //           child: Row(
-                //             children: [
-                //               Container(
-                //                 padding: EdgeInsets.only(left: 13.0.r, right: 18.0.r, top: 10.0.r, bottom: 10.0.r),
-                //                 height: 60.h,
-                //                 decoration: BoxDecoration(
-                //                   color: kWhite,
-                //                   borderRadius: BorderRadius.only(
-                //                     bottomLeft: Radius.circular(10.0.r),
-                //                     bottomRight: Radius.circular(10.0.r),
-                //                   ),
-                //                 ),
-                //                 child: Row(
-                //                   children: [
-                //                     InkWell(
-                //                       onTap:(){
-                //                         pickImage(ImageSource.camera);
-                //                       },
-                //                       child: Row(
-                //                         children: [
-                //                           SizedBox(child: Image.asset(Assets.camera)),
-                //                           SizedBox(width: 15.w,),
-                //                           Text(Strings.kPicture, style: kDetailAccount),
-                //                         ],
-                //                       ),
-                //                     ),
-                //                     VerticalDivider(
-                //                       width: 36.w,
-                //                       thickness: 2.0,
-                //                       color: kDivide,
-                //                     ),
-                //                     InkWell(
-                //                       onTap: (){
-                //                         pickImage(ImageSource.gallery);
-                //                       },
-                //                       child: Row(
-                //                         children: [
-                //                           SizedBox(child: Image.asset(Assets.gallery)),
-                //                           SizedBox(width: 15.w,),
-                //                           Text(Strings.kUpload, style: kDetailAccount)
-                //                         ],
-                //                       ),
-                //                     ),
-                //                   ],
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
                 SizedBox(height: 10.h,),
                 FormNum(text: Strings.kRentV, hText: 'answer', controller: _rentValueController),
                 SizedBox(height: 10.h,),
@@ -297,7 +247,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       padding: EdgeInsets.only(left: 5.0.r),
                       child: DropdownButton(
                         items: Status.map((items) {
-                          return DropdownMenuItem<String>(value: items,child: Text(items, style: kDetailAccount,),);
+                          return DropdownMenuItem<String>(value: items,child: Text(items, style: kFirstN,),);
                         }).toList(),
                         value: myStatus,
                         onChanged: (value){

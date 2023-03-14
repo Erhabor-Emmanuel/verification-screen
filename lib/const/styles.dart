@@ -28,10 +28,17 @@ TextStyle kFaqStyle = GoogleFonts.inter(
     color: kBlack,
     fontWeight: FontWeight.w700
 );
+
 TextStyle kFirstN = GoogleFonts.inter(
     fontSize: 14.sp,
     color: kFirst,
     fontWeight: FontWeight.w500
+);
+
+TextStyle kFirstTN = GoogleFonts.inter(
+    fontSize: 14.sp,
+    color: kFirst,
+    fontWeight: FontWeight.w700
 );
 
 TextStyle kFeatureStyle = GoogleFonts.inter(

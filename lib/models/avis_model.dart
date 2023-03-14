@@ -1,11 +1,11 @@
 
-class AvisList {
+class AvisListModel {
   List<Data>? data;
   bool? status;
 
-  AvisList({this.data, this.status});
+  AvisListModel({this.data, this.status});
 
-  AvisList.fromJson(Map<String, dynamic> json) {
+  AvisListModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {

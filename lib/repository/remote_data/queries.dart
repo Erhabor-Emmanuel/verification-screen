@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import '../../models/avis_model.dart';
 import '../../models/verification_model.dart';
 import 'package:verification/repository/remote_data/api_constants.dart';
 import 'dart:async';
@@ -12,11 +13,19 @@ class VerificationRepo extends ChangeNotifier{
   bool _isLoading = false;
   String _resMessage = '';
   int _resStatusCode = 0;
+  String _agentName = '';
+  String _agentPhone = '';
+  String _avisId = '';
+  String _verified = '';
 
   //Getters
   int get resStatusCode => _resStatusCode;
   bool get isLoading => _isLoading;
   String get resMessage => _resMessage;
+  String get agentName => _agentName;
+  String get agentPhone => _agentPhone;
+  String get avisId => _avisId;
+  String get verified => _verified;
 
   Future<VerifyModel> verifyUsers ({
     required String name,
@@ -62,7 +71,7 @@ class VerificationRepo extends ChangeNotifier{
 
     try{
       response = await http
-          .post(url, body: jsonBody, headers: await Headers.fullHeader)
+          .put(url, body: jsonBody, headers: await Headers.fullHeader)
           .timeout(Duration(seconds: _timeout));
     } catch(e){
       _resMessage = 'Please try again';
@@ -95,6 +104,52 @@ class VerificationRepo extends ChangeNotifier{
     }
     VerifyModel verifying = VerifyModel();
     return verifying;
+  }
+
+
+
+  Future<AvisListModel> getAvisList() async{
+    Uri url = Uri.parse('https://ccendpoints.herokuapp.com/api/v2/retrieve-avs-by-phone?phone=08102637956');
+    http.Response? response;
+
+    response = await http
+        .get(url, headers: await Headers.fullHeader)
+        .timeout(Duration(seconds: _timeout));
+
+    var jsonString = response.body;
+    Map<String, dynamic> responseData = json.decode(response.body);
+    debugPrint('responseDatappppp ===> $responseData');
+    String agentNamee = responseData['data']['agent_name'] ?? '';
+    String agentPhonee = responseData['data']['agent_phone'] ?? '';
+    String avsId = responseData['data']['avs_id'] ?? '';
+    String verifiedd = responseData['data']['verified'] ?? '';
+    String status = responseData['status'] ?? '';
+    debugPrint('statusCode ===> ${response.statusCode}');
+    debugPrint("agentNamee ===========> $agentNamee");
+    debugPrint("agentPhonee ===========> $agentPhonee");
+    debugPrint("avsId ===========> $avsId");
+    debugPrint("verifiedd ===========> $verifiedd");
+    debugPrint("status ===========> $status");
+
+    if(response.statusCode == 200){
+      _isLoading = false;
+      _agentName = agentNamee;
+      _agentPhone = agentPhonee;
+      _avisId = avsId;
+      _verified = verifiedd;
+      // debugPrint("messageTrue ==========> $message");
+
+      notifyListeners();
+      return AvisListModel.fromJson(responseData);
+    }else{
+      // debugPrint("messageElse =========> $message");
+      _isLoading = false;
+      _resMessage = 'Network connecton error';
+      notifyListeners();
+      // debugPrint('status==========> ${result.status}');
+      throw Exception('Exception===========> Something went wrong');
+    }
+
   }
 
 

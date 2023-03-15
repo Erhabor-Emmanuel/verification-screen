@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:verification/verification/rent.dart';
+import 'package:verification/verification/rentRenewal.dart';
 import 'package:verification/verification/verification.dart';
 
 import '../common_widgets/shortButton.dart';
 import '../const/styles.dart';
 import '../models/avis_model.dart';
 import '../repository/remote_data/queries.dart';
+import 'bnpl.dart';
+import 'merchant.dart';
 
 class AvisList extends StatefulWidget {
   const AvisList({Key? key}) : super(key: key);
@@ -22,6 +28,7 @@ class _AvisListState extends State<AvisList> {
   @override
   void initState() {
     _repository.getAvisList();
+    dRdata = _repository.myData;
     super.initState();
     // WidgetsBinding.instance.addPostFrameCallback((_) async{
     //   await _repository.getAvisList();
@@ -55,7 +62,7 @@ class _AvisListState extends State<AvisList> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 300.h,
+                  height: MediaQuery.of(context).size.height -100.h,
                   child: FutureBuilder<AvisListModel>(
                     future: _repository.getAvisList(),
                       builder: (context, snapshot){
@@ -67,7 +74,20 @@ class _AvisListState extends State<AvisList> {
                               itemBuilder: (BuildContext context, int index){
                               var listed = snapshot.data?.data![index];
                               String? avisId = listed?.avsId;
+                              String? createdAt = listed?.createdAt;
+                              String? request = listed?.request;
+                              String? verified = listed?.verified;
+                              String? vertical = listed?.vertical;
+                              String? tenantAddress = listed?.tenantAddress;
+                              String? clientAddress = listed?.clientAddress;
+                              final resss = jsonDecode(request!);
+                              final bg = Map<String, dynamic>.from(resss);
                               debugPrint('avisId==========> $avisId');
+                              debugPrint('createdAt==========> $createdAt');
+                              debugPrint('request==========> $request');
+                              debugPrint('vertical==========> $vertical');
+                              debugPrint('verified==========> $verified');
+                              debugPrint('ShopName==========> ${bg['shop_name']}');
                               return Stack(
                                 children: [
                                   SizedBox(
@@ -79,30 +99,45 @@ class _AvisListState extends State<AvisList> {
                                           borderRadius: BorderRadius.circular(12.r)
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsets.only(left: 10.r, right: 10.r, top: 10.r),
+                                        padding: EdgeInsets.only(left: 10.r, right: 10.r, top: 20.r),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
-                                                Text('Agent Name: ', style: kFirstTN,),
-                                                Text('${listed?.agentName}', style: kFirstN,),
+                                                Text('Name: ', style: kFirstTN,),
+                                                Text('${bg['full_name']}', style: kFirstN,),
                                               ],
                                             ),
-                                            SizedBox(height: 10.h,),
+                                            SizedBox(height: 6.h,),
                                             Row(
                                               children: [
                                                 Text('Phone no: ', style: kFirstTN,),
                                                 Text('${listed?.agentPhone}', style: kFirstN,),
                                               ],
                                             ),
+                                            SizedBox(height: 6.h,),
+                                            Row(
+                                              children: [
+                                                Text('Date: ', style: kFirstTN,),
+                                                Text('$createdAt', style: kFirstN,),
+                                              ],
+                                            ),
                                             SizedBox(height: 10.h,),
                                             listed?.verified == '0'? GestureDetector(
-                                              onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (builder)=> VerificationScreen(avsId: '$avisId',))),
+                                              onTap: (){
+                                                if(verified == '0' && vertical=='merchant'){
+                                                  Navigator.push(context, MaterialPageRoute(builder: (builder)=> MerchantScreen(avsId: '$avisId',)));
+                                                }else if(verified == '0' && vertical=='rent-renewal'){
+                                                  Navigator.push(context, MaterialPageRoute(builder: (builder)=> RentRenewalScreen(avsId: '$avisId',)));
+                                                }else if(verified == '0' && vertical=='rent-acquisition'){
+                                                  Navigator.push(context, MaterialPageRoute(builder: (builder)=> RentScreen(avsId: '$avisId',)));
+                                                }else if(verified == '0' && vertical=='bnpl'){
+                                                  Navigator.push(context, MaterialPageRoute(builder: (builder)=> BnplScreen(avsId: '$avisId',)));
+                                                }
+                                              },
                                                 child: Center(child: ShortLoginB(text: 'Verify now', style: kLoginButton,))) :
-                                            GestureDetector(
-                                                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (builder)=> VerificationScreen(avsId: '$avisId',))),
-                                                child: Center(child: ShortLoginB(text: 'Verify now', style: kLoginButton,))),
+                                            const Text(''),
                                             listed?.verified == '0'? SizedBox(height: 15.h,) : SizedBox(height: 0.h,),
                                           ],
                                         ),
@@ -135,12 +170,12 @@ class _AvisListState extends State<AvisList> {
                             color: kDarkBlue,
                             child: Center(child: Text('Checking for available request.....', style: kFirstN,)),
                           );
-                        }else if(dList==null){
+                        }else if(dRdata==null){
                           return Container(
                             width: MediaQuery.of(context).size.width,
                             height: 50.h,
                             color: kDarkBlue,
-                            child: Center(child: Text('Checking for available request.....', style: kFirstN,)),
+                            child: Center(child: Text('No available request.....', style: kFirstN,)),
                           );
                         }
                         return const Center(child: CircularProgressIndicator());

@@ -28,22 +28,22 @@ class VerificationRepo extends ChangeNotifier{
 
   Future<VerifyModel> verifyUsers ({
     required String avs_id,
-    required String landlord_email,
-    required String landlord_phone,
-    required String apartment_type,
-    required String rent_value,
-    required String owed_previous,
-    required String tenant_address,
-    required String business_name,
-    required String approve_amount,
-    required String client_address,
-    required String device_status,
-    required String ownership_status,
-    required String client_afford
+    String? landlord_email,
+    String? landlord_phone,
+    String? apartment_type,
+    String? rent_value,
+    String? owed_previous,
+    String? tenant_address,
+    String? business_name,
+    String? approve_amount,
+    String? client_address,
+    String? device_status,
+    String? ownership_status,
+    String? client_afford
   })async{
     _isLoading = true;
     notifyListeners();
-    Uri url = Uri.parse('https://ccendpoints.herokuapp.com/api/v2/create-user-info');
+    Uri url = Uri.parse('http://ccendpoints.herokuapp.com/api/v2/update-avs');
     var body = {
       'avs_id': avs_id,
       'landlord_email': landlord_email,
@@ -116,6 +116,8 @@ class VerificationRepo extends ChangeNotifier{
     debugPrint('responseDatappppp ===> $responseData');
 
     List<dynamic> gottenData = responseData['data'];
+    _myData = gottenData;
+    notifyListeners();
     // String avsId = responseData['data']['avs_id'] ?? '';
     // String verifiedd = responseData['data']['verified'] ?? '';
     // String status = responseData['status'] ?? '';
@@ -123,8 +125,8 @@ class VerificationRepo extends ChangeNotifier{
     // debugPrint("agentNamee ===========> $agentNamee");
     // debugPrint("agentPhonee ===========> $agentPhonee");
     // debugPrint("avsId ===========> $avsId");
-    // debugPrint("verifiedd ===========> $verifiedd");
-    // debugPrint("status ===========> $status");
+
+    debugPrint("gottenData ===========> $gottenData");
 
     if(response.statusCode == 200){
       _isLoading = false;

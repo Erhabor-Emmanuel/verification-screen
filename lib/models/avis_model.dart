@@ -45,6 +45,7 @@ class Data {
   String? request;
   String? verified;
   String? assigned;
+  String? vertical;
   String? createdAt;
   String? updatedAt;
 
@@ -68,6 +69,7 @@ class Data {
         this.request,
         this.verified,
         this.assigned,
+        this.vertical,
         this.createdAt,
         this.updatedAt});
 
@@ -91,6 +93,7 @@ class Data {
     request = json['request'];
     verified = json['verified'];
     assigned = json['assigned'];
+    vertical = json['vertical'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
@@ -116,6 +119,7 @@ class Data {
     data['request'] = this.request;
     data['verified'] = this.verified;
     data['assigned'] = this.assigned;
+    data['vertical'] = this.vertical;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     return data;

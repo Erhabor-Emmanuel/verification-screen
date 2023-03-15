@@ -16,7 +16,8 @@ import '../const/styles.dart';
 import '../repository/remote_data/queries.dart';
 
 class VerificationScreen extends StatefulWidget {
-  const VerificationScreen({Key? key}) : super(key: key);
+  final String avsId;
+  const VerificationScreen({Key? key, required this.avsId}) : super(key: key);
 
   @override
   State<VerificationScreen> createState() => _VerificationScreenState();
@@ -39,9 +40,7 @@ List<String> Status = [
 class _VerificationScreenState extends State<VerificationScreen> {
 
 
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
+
   TextEditingController _landEmailController = TextEditingController();
   TextEditingController _landPhController = TextEditingController();
   TextEditingController _rentValueController = TextEditingController();
@@ -75,9 +74,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   void dispose() {
-    _nameController;
-    _emailController;
-    _phoneController;
     _landEmailController;
     _landPhController;
     _rentValueController;
@@ -113,12 +109,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 SizedBox(height: 5.h,),
                 Text(Strings.UpdateProfile, style: kFeatureStyle,),
                 SizedBox(height: 15.h,),
-                FormWidget(text: Strings.kName, hText: 'name', controller: _nameController),
-                SizedBox(height: 10.h,),
-                FormWidget(text: Strings.kEmail, hText: 'Email', controller: _emailController),
-                SizedBox(height: 10.h,),
-                FormNum(text: Strings.kPhn, hText: 'Phone no.', controller: _phoneController),
-                SizedBox(height: 10.h,),
                 FormWidget(text: Strings.kLandE, hText: 'email', controller: _landEmailController),
                 SizedBox(height: 10.h,),
                 FormNum(text: Strings.kLandN, hText: 'Phone no.', controller: _landPhController,),
@@ -413,9 +403,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     return GestureDetector(
                       onTap: ()async{
                         await verify.verifyUsers(
-                            name: _nameController.text,
-                            email: _emailController.text,
-                            phone: _phoneController.text,
+                          avs_id: widget.avsId,
                           landlord_email: _landEmailController.text,
                             landlord_phone: _landPhController.text,
                             apartment_type: myGender.toString(),

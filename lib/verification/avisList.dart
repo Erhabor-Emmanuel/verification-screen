@@ -17,11 +17,14 @@ class AvisList extends StatefulWidget {
 class _AvisListState extends State<AvisList> {
   final VerificationRepo _repository = VerificationRepo();
   Future<AvisListModel>? _avsRequest;
+  List<dynamic>? dRdata;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       await _repository.getAvisList();
+      dRdata = await _repository.myData;
+
       setState(() {});
     });
   }
@@ -31,6 +34,7 @@ class _AvisListState extends State<AvisList> {
     debugPrint('messagggggggggg');
     return Scaffold(
       appBar: AppBar(
+        title: Text('Request', style: kFirstTTN,),
         leading: IconButton(
           onPressed: (){
             Navigator.pop(context);
@@ -38,14 +42,14 @@ class _AvisListState extends State<AvisList> {
           icon: const Icon(Icons.arrow_back, color: kBlack),
         ),
         backgroundColor: kLoanCard,
-        elevation: 0.0,
+        elevation: 0.5
       ),
       backgroundColor: kLoanCard,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(left: 10.r, right: 10.r, top: 10.r),
-            child: Column(
+            child: dRdata == null? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
@@ -53,76 +57,70 @@ class _AvisListState extends State<AvisList> {
                   child: FutureBuilder<AvisListModel>(
                     future: _repository.getAvisList(),
                       builder: (context, snapshot){
+                      var dList = snapshot.data?.data;
                         if(snapshot.hasData){
                           return ListView.builder(
                             itemCount: snapshot.data?.data?.length,
                               scrollDirection: Axis.vertical,
                               itemBuilder: (BuildContext context, int index){
                               var listed = snapshot.data?.data![index];
-                              return GestureDetector(
-                                onTap: (){
-                                  // String? agentName = listed?.agentName;
-                                  // String? agentPhone = listed?.agentPhone;
-                                  String? avisId = listed?.avsId;
-                                  String? verified = listed?.verified;
-                                  debugPrint('avisId==========> $avisId');
-                                },
-                                child: Stack(
-                                  children: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.height,
-                                      child: Card(
-                                        elevation: 0.0,
-                                        color: kWhite,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(12.r)
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(left: 10.r, right: 10.r, top: 10.r),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text('Agent Name: ', style: kFirstTN,),
-                                                  Text('${listed?.agentName}', style: kFirstN,),
-                                                ],
-                                              ),
-                                              SizedBox(height: 10.h,),
-                                              Row(
-                                                children: [
-                                                  Text('Phone no: ', style: kFirstTN,),
-                                                  Text('${listed?.agentPhone}', style: kFirstN,),
-                                                ],
-                                              ),
-                                              SizedBox(height: 10.h,),
-                                              listed?.verified == '0'? GestureDetector(
-                                                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (builder)=> VerificationScreen())),
-                                                  child: Center(child: ShortLoginB(text: 'Verify now', style: kLoginButton,))) :
-                                              const Text(''),
-                                              listed?.verified == '0'? SizedBox(height: 15.h,) : SizedBox(height: 0.h,),
-                                            ],
-                                          ),
+                              String? avisId = listed?.avsId;
+                              debugPrint('avisId==========> $avisId');
+                              return Stack(
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.height,
+                                    child: Card(
+                                      elevation: 0.0,
+                                      color: kWhite,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(12.r)
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 10.r, right: 10.r, top: 10.r),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text('Agent Name: ', style: kFirstTN,),
+                                                Text('${listed?.agentName}', style: kFirstN,),
+                                              ],
+                                            ),
+                                            SizedBox(height: 10.h,),
+                                            Row(
+                                              children: [
+                                                Text('Phone no: ', style: kFirstTN,),
+                                                Text('${listed?.agentPhone}', style: kFirstN,),
+                                              ],
+                                            ),
+                                            SizedBox(height: 10.h,),
+                                            listed?.verified == '0'? GestureDetector(
+                                              onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (builder)=> VerificationScreen(avsId: '$avisId',))),
+                                                child: Center(child: ShortLoginB(text: 'Verify now', style: kLoginButton,))) :
+                                            const Text(''),
+                                            listed?.verified == '0'? SizedBox(height: 15.h,) : SizedBox(height: 0.h,),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                    Positioned(
-                                      top: 6,
-                                      right: 8,
-                                      child: Container(
-                                        height: 20.h,
-                                        decoration: BoxDecoration(
-                                          color: listed?.verified == '0'? kLogout : kSafeGreen,
-                                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: listed?.verified == '0'? Center(child: Text(' not verified ', style: kFirstN,)) : Center(child: Text(' verified ', style: kFirstN,)),
-                                        ),
+                                  ),
+                                  Positioned(
+                                    top: 6,
+                                    right: 8,
+                                    child: Container(
+                                      height: 20.h,
+                                      decoration: BoxDecoration(
+                                        color: listed?.verified == '0'? kLogout : kSafeGreen,
+                                        borderRadius: BorderRadius.all(Radius.circular(10.r)),
                                       ),
-                                    )
-                                  ],
-                                ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: listed?.verified == '0'? Center(child: Text(' not verified ', style: kFirstN,)) : Center(child: Text(' verified ', style: kFirstN,)),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               );
                               }
                           );
@@ -192,6 +190,8 @@ class _AvisListState extends State<AvisList> {
                 //   ],
                 // ),
               ],
+            ) : Center(
+              child: Center(child: Text('No available request.....', style: kFirstN,)),
             ),
           ),
         ),

@@ -14,7 +14,7 @@ class VerificationRepo extends ChangeNotifier{
   String _resMessage = '';
   int _resStatusCode = 0;
   String _agentName = '';
-  String _agentPhone = '';
+  List<dynamic> _myData = [];
   String _avisId = '';
   String _verified = '';
 
@@ -23,14 +23,12 @@ class VerificationRepo extends ChangeNotifier{
   bool get isLoading => _isLoading;
   String get resMessage => _resMessage;
   String get agentName => _agentName;
-  String get agentPhone => _agentPhone;
+  List<dynamic> get myData => _myData;
   String get avisId => _avisId;
   String get verified => _verified;
 
   Future<VerifyModel> verifyUsers ({
-    required String name,
-    required String email,
-    required String phone,
+    required String avs_id,
     required String landlord_email,
     required String landlord_phone,
     required String apartment_type,
@@ -48,10 +46,7 @@ class VerificationRepo extends ChangeNotifier{
     notifyListeners();
     Uri url = Uri.parse('https://ccendpoints.herokuapp.com/api/v2/create-user-info');
     var body = {
-      'avs_id': "3342",
-      'name': name,
-      'email': email,
-      'phone': phone,
+      'avs_id': avs_id,
       'landlord_email': landlord_email,
       'landlord_phone': landlord_phone,
       'apartment_type': apartment_type,
@@ -109,7 +104,8 @@ class VerificationRepo extends ChangeNotifier{
 
 
   Future<AvisListModel> getAvisList() async{
-    Uri url = Uri.parse('https://ccendpoints.herokuapp.com/api/v2/retrieve-avs-by-phone?phone=08102637956');
+    String numb = '08097030895';
+    Uri url = Uri.parse('https://ccendpoints.herokuapp.com/api/v2/retrieve-avs-by-phone?phone=$numb');
     http.Response? response;
 
     response = await http
@@ -120,7 +116,7 @@ class VerificationRepo extends ChangeNotifier{
     Map<String, dynamic> responseData = json.decode(response.body);
     debugPrint('responseDatappppp ===> $responseData');
 
-    // String agentPhonee = responseData['data']['agent_phone'] ?? '';
+    List<dynamic> gottenData = responseData['data'];
     // String avsId = responseData['data']['avs_id'] ?? '';
     // String verifiedd = responseData['data']['verified'] ?? '';
     // String status = responseData['status'] ?? '';
@@ -133,6 +129,7 @@ class VerificationRepo extends ChangeNotifier{
 
     if(response.statusCode == 200){
       _isLoading = false;
+      _myData = gottenData;
       // _agentName = agentNamee;
       // _agentPhone = agentPhonee;
       // _avisId = avsId;

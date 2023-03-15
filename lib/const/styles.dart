@@ -36,6 +36,12 @@ TextStyle kFirstN = GoogleFonts.inter(
     fontWeight: FontWeight.w500
 );
 
+TextStyle kFirstTTN = GoogleFonts.inter(
+    fontSize: 14.sp,
+    color: kFirst,
+    fontWeight: FontWeight.w700
+);
+
 TextStyle kFirstTN = GoogleFonts.inter(
     fontSize: 14.sp,
     color: kFirst,

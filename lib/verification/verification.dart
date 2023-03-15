@@ -97,6 +97,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          leading: IconButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back, color: kBlack),
+          ),
+          backgroundColor: kLoanCard,
+          elevation: 0.5
+      ),
       backgroundColor: kLoanCard,
       body: SafeArea(
         child: Padding(

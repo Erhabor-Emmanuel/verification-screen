@@ -5,7 +5,6 @@ import '../../models/avis_model.dart';
 import '../../models/verification_model.dart';
 import 'package:verification/repository/remote_data/api_constants.dart';
 import 'dart:async';
-import 'dart:io';
 
 class VerificationRepo extends ChangeNotifier{
   final int _timeout = 60;

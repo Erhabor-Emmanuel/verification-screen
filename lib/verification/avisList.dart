@@ -19,17 +19,17 @@ class _AvisListState extends State<AvisList> {
   Future<AvisListModel>? _avsRequest;
   List<dynamic>? dRdata;
 
-  // @override
-  // void initState() {
-  //   _repository.getAvisList();
-  //   super.initState();
-  //   // WidgetsBinding.instance.addPostFrameCallback((_) async{
-  //   //   await _repository.getAvisList();
-  //   //   dRdata = await _repository.myData;
-  //   //
-  //   //   setState(() {});
-  //   // });
-  // }
+  @override
+  void initState() {
+    _repository.getAvisList();
+    super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) async{
+    //   await _repository.getAvisList();
+    //   dRdata = await _repository.myData;
+    //
+    //   setState(() {});
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,9 @@ class _AvisListState extends State<AvisList> {
                                             listed?.verified == '0'? GestureDetector(
                                               onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (builder)=> VerificationScreen(avsId: '$avisId',))),
                                                 child: Center(child: ShortLoginB(text: 'Verify now', style: kLoginButton,))) :
-                                            const Text(''),
+                                            GestureDetector(
+                                                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (builder)=> VerificationScreen(avsId: '$avisId',))),
+                                                child: Center(child: ShortLoginB(text: 'Verify now', style: kLoginButton,))),
                                             listed?.verified == '0'? SizedBox(height: 15.h,) : SizedBox(height: 0.h,),
                                           ],
                                         ),

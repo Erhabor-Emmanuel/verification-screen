@@ -104,7 +104,7 @@ class VerificationRepo extends ChangeNotifier{
 
 
   Future<AvisListModel> getAvisList() async{
-    String numb = '08097030895';
+    String numb = '08102637956';
     Uri url = Uri.parse('https://ccendpoints.herokuapp.com/api/v2/retrieve-avs-by-phone?phone=$numb');
     http.Response? response;
 

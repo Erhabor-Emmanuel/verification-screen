@@ -49,7 +49,7 @@ class _AvisListState extends State<AvisList> {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(left: 10.r, right: 10.r, top: 10.r),
-            child: dRdata == null? Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
@@ -190,8 +190,6 @@ class _AvisListState extends State<AvisList> {
                 //   ],
                 // ),
               ],
-            ) : Center(
-              child: Center(child: Text('No available request.....', style: kFirstN,)),
             ),
           ),
         ),

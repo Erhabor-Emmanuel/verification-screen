@@ -19,15 +19,17 @@ class _AvisListState extends State<AvisList> {
   Future<AvisListModel>? _avsRequest;
   List<dynamic>? dRdata;
 
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async{
-      await _repository.getAvisList();
-      dRdata = await _repository.myData;
-
-      setState(() {});
-    });
-  }
+  // @override
+  // void initState() {
+  //   _repository.getAvisList();
+  //   super.initState();
+  //   // WidgetsBinding.instance.addPostFrameCallback((_) async{
+  //   //   await _repository.getAvisList();
+  //   //   dRdata = await _repository.myData;
+  //   //
+  //   //   setState(() {});
+  //   // });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +127,13 @@ class _AvisListState extends State<AvisList> {
                               }
                           );
                         } else if(snapshot.hasError){
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 50.h,
+                            color: kDarkBlue,
+                            child: Center(child: Text('Checking for available request.....', style: kFirstN,)),
+                          );
+                        }else if(dList==null){
                           return Container(
                             width: MediaQuery.of(context).size.width,
                             height: 50.h,

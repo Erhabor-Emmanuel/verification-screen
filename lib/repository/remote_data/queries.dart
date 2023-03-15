@@ -119,24 +119,24 @@ class VerificationRepo extends ChangeNotifier{
     var jsonString = response.body;
     Map<String, dynamic> responseData = json.decode(response.body);
     debugPrint('responseDatappppp ===> $responseData');
-    String agentNamee = responseData['data']['agent_name'] ?? '';
-    String agentPhonee = responseData['data']['agent_phone'] ?? '';
-    String avsId = responseData['data']['avs_id'] ?? '';
-    String verifiedd = responseData['data']['verified'] ?? '';
-    String status = responseData['status'] ?? '';
-    debugPrint('statusCode ===> ${response.statusCode}');
-    debugPrint("agentNamee ===========> $agentNamee");
-    debugPrint("agentPhonee ===========> $agentPhonee");
-    debugPrint("avsId ===========> $avsId");
-    debugPrint("verifiedd ===========> $verifiedd");
-    debugPrint("status ===========> $status");
+
+    // String agentPhonee = responseData['data']['agent_phone'] ?? '';
+    // String avsId = responseData['data']['avs_id'] ?? '';
+    // String verifiedd = responseData['data']['verified'] ?? '';
+    // String status = responseData['status'] ?? '';
+    // debugPrint('statusCode ===> ${response.statusCode}');
+    // debugPrint("agentNamee ===========> $agentNamee");
+    // debugPrint("agentPhonee ===========> $agentPhonee");
+    // debugPrint("avsId ===========> $avsId");
+    // debugPrint("verifiedd ===========> $verifiedd");
+    // debugPrint("status ===========> $status");
 
     if(response.statusCode == 200){
       _isLoading = false;
-      _agentName = agentNamee;
-      _agentPhone = agentPhonee;
-      _avisId = avsId;
-      _verified = verifiedd;
+      // _agentName = agentNamee;
+      // _agentPhone = agentPhonee;
+      // _avisId = avsId;
+      // _verified = verifiedd;
       // debugPrint("messageTrue ==========> $message");
 
       notifyListeners();

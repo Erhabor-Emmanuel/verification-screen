@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:verification/verification/verification.dart';
 
 import '../common_widgets/shortButton.dart';
 import '../const/styles.dart';
@@ -15,17 +16,19 @@ class AvisList extends StatefulWidget {
 
 class _AvisListState extends State<AvisList> {
   final VerificationRepo _repository = VerificationRepo();
-  late Future<AvisListModel> _avsRequest;
+  Future<AvisListModel>? _avsRequest;
 
   @override
   void initState() {
-    // TODO: implement initState
-    _avsRequest = _repository.getAvisList();
-    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      await _repository.getAvisList();
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('messagggggggggg');
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -46,8 +49,9 @@ class _AvisListState extends State<AvisList> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
+                  height: 300.h,
                   child: FutureBuilder<AvisListModel>(
-                    future: _avsRequest,
+                    future: _repository.getAvisList(),
                       builder: (context, snapshot){
                         if(snapshot.hasData){
                           return ListView.builder(
@@ -61,6 +65,7 @@ class _AvisListState extends State<AvisList> {
                                   // String? agentPhone = listed?.agentPhone;
                                   String? avisId = listed?.avsId;
                                   String? verified = listed?.verified;
+                                  debugPrint('avisId==========> $avisId');
                                 },
                                 child: Stack(
                                   children: [
@@ -91,8 +96,11 @@ class _AvisListState extends State<AvisList> {
                                                 ],
                                               ),
                                               SizedBox(height: 10.h,),
-                                              listed?.verified == '0'? Center(child: ShortLoginB(text: 'Verify now', style: kLoginButton,)) : const Text(''),
-                                              SizedBox(height: 15.h,),
+                                              listed?.verified == '0'? GestureDetector(
+                                                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (builder)=> VerificationScreen())),
+                                                  child: Center(child: ShortLoginB(text: 'Verify now', style: kLoginButton,))) :
+                                              const Text(''),
+                                              listed?.verified == '0'? SizedBox(height: 15.h,) : SizedBox(height: 0.h,),
                                             ],
                                           ),
                                         ),
@@ -123,7 +131,7 @@ class _AvisListState extends State<AvisList> {
                             width: MediaQuery.of(context).size.width,
                             height: 50.h,
                             color: kDarkBlue,
-                            child: Center(child: Text('Loading.....', style: kFirstN,)),
+                            child: Center(child: Text('Checking for available request.....', style: kFirstN,)),
                           );
                         }
                         return const Center(child: CircularProgressIndicator());

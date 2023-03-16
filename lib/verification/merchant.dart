@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../common_widgets/LoginButton.dart';
 import '../common_widgets/formNo.dart';
 import '../common_widgets/formWidget.dart';
+import '../common_widgets/inactiveButton.dart';
 import '../common_widgets/loginCircular.dart';
 
 import '../const/snackbar.dart';
@@ -39,6 +40,20 @@ class _MerchantScreenState extends State<MerchantScreen> {
   TextEditingController _businessNameController = TextEditingController();
   TextEditingController _approvedAmountController = TextEditingController();
   bool enable = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _businessNameController.addListener(() {
+      final enable = _businessNameController.text.isNotEmpty && _approvedAmountController.text.isNotEmpty? true: false;
+      setState(() => this.enable = enable);
+    });
+
+    _approvedAmountController.addListener(() {
+      final enable = _approvedAmountController.text.isNotEmpty && _businessNameController.text.isNotEmpty ? true:false;
+      setState(() => this.enable = enable);
+    });
+  }
 
 
   @override
@@ -114,7 +129,7 @@ class _MerchantScreenState extends State<MerchantScreen> {
                   ),
                 ),
                 SizedBox(height: 10.h,),
-                Consumer<VerificationRepo>(
+                enable? Consumer<VerificationRepo>(
                     builder: (context, verify, child) {
                       return GestureDetector(
                         onTap: ()async{
@@ -138,7 +153,7 @@ class _MerchantScreenState extends State<MerchantScreen> {
                         LoginB(text: Strings.kConfirm, style: kLoginButton),
                       );
                     }
-                ),
+                ) : InActiveLoginB(text: Strings.kConfirm, style: kLoginButton,),
                 SizedBox(height: 25.h,),
               ],
             ),

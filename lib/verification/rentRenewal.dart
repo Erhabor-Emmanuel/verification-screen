@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../common_widgets/LoginButton.dart';
 import '../common_widgets/formNo.dart';
 import '../common_widgets/formWidget.dart';
+import '../common_widgets/inactiveButton.dart';
 import '../common_widgets/loginCircular.dart';
 import '../const/assets.dart';
 import '../const/snackbar.dart';
@@ -43,6 +44,29 @@ class _RentRenewalScreenState extends State<RentRenewalScreen> {
   TextEditingController _landPhController = TextEditingController();
   TextEditingController _rentValueController = TextEditingController();
   bool enable = false;
+  bool workerOne = false;
+  bool workerTwo = false;
+  bool enablerOne = false;
+  bool enablerTwo = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _landEmailController.addListener(() {
+      final enable = _landEmailController.text.isNotEmpty && _landPhController.text.isNotEmpty && _rentValueController.text.isNotEmpty? true: false;
+      setState(() => this.enable = enable);
+    });
+
+    _landPhController.addListener(() {
+      final enable = _landPhController.text.isNotEmpty && _landEmailController.text.isNotEmpty &&_rentValueController.text.isNotEmpty? true:false;
+      setState(() => this.enable = enable);
+    });
+
+    _rentValueController.addListener(() {
+      final enable = _rentValueController.text.isNotEmpty && _landPhController.text.isNotEmpty && _landEmailController.text.isNotEmpty? true:false;
+      setState(() => this.enable = enable);
+    });
+  }
 
 
 
@@ -153,6 +177,7 @@ class _RentRenewalScreenState extends State<RentRenewalScreen> {
                                     setState(() {
                                       _checkBox = value;
                                       auto = 'Yes';
+                                      workerOne = true;
                                     });
                                   }
                                 },
@@ -185,6 +210,7 @@ class _RentRenewalScreenState extends State<RentRenewalScreen> {
                                   if(value != null && _checkBox == false){
                                     setState(() {
                                       _nextCheckBox = value;
+                                      enablerOne = true;
                                       auto = 'No';
                                     });
                                   }
@@ -226,6 +252,7 @@ class _RentRenewalScreenState extends State<RentRenewalScreen> {
                                     setState(() {
                                       _checkBoxFour = value;
                                       autoFour = 'Yes';
+                                      workerTwo = true;
                                     });
                                   }
                                 },
@@ -259,6 +286,7 @@ class _RentRenewalScreenState extends State<RentRenewalScreen> {
                                     setState(() {
                                       _nextCheckBoxFour = value;
                                       autoFour = 'No';
+                                      enablerTwo = true;
                                     });
                                   }
                                 },
@@ -271,7 +299,7 @@ class _RentRenewalScreenState extends State<RentRenewalScreen> {
                   ],
                 ),
                 SizedBox(height: 25.h,),
-                Consumer<VerificationRepo>(
+                (enable && auto != null && autoFour != null)? Consumer<VerificationRepo>(
                     builder: (context, verify, child) {
                       return GestureDetector(
                         onTap: ()async{
@@ -301,7 +329,8 @@ class _RentRenewalScreenState extends State<RentRenewalScreen> {
                         LoginB(text: Strings.kConfirm, style: kLoginButton),
                       );
                     }
-                ),
+                ) :
+                InActiveLoginB(text: Strings.kConfirm, style: kLoginButton,),
                 SizedBox(height: 25.h,),
               ],
             ),

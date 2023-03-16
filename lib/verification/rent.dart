@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../common_widgets/LoginButton.dart';
 import '../common_widgets/formNo.dart';
 import '../common_widgets/formWidget.dart';
+import '../common_widgets/inactiveButton.dart';
 import '../common_widgets/loginCircular.dart';
 import '../const/snackbar.dart';
 import '../const/strings.dart';
@@ -39,6 +40,25 @@ class _RentScreenState extends State<RentScreen> {
   TextEditingController _landPhController = TextEditingController();
   TextEditingController _rentValueController = TextEditingController();
   bool enable = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _landEmailController.addListener(() {
+      final enable = _landEmailController.text.isNotEmpty && _landPhController.text.isNotEmpty && _rentValueController.text.isNotEmpty? true: false;
+      setState(() => this.enable = enable);
+    });
+
+    _landPhController.addListener(() {
+      final enable = _landPhController.text.isNotEmpty && _landEmailController.text.isNotEmpty &&_rentValueController.text.isNotEmpty? true:false;
+      setState(() => this.enable = enable);
+    });
+
+    _rentValueController.addListener(() {
+      final enable = _rentValueController.text.isNotEmpty && _landPhController.text.isNotEmpty && _landEmailController.text.isNotEmpty? true:false;
+      setState(() => this.enable = enable);
+    });
+  }
 
 
   @override
@@ -90,7 +110,7 @@ class _RentScreenState extends State<RentScreen> {
                 SizedBox(height: 10.h,),
                 FormNum(text: Strings.kRentV, hText: 'answer', controller: _rentValueController),
                 SizedBox(height: 25.h,),
-                Consumer<VerificationRepo>(
+                enable? Consumer<VerificationRepo>(
                     builder: (context, verify, child) {
                       return GestureDetector(
                         onTap: ()async{
@@ -114,7 +134,8 @@ class _RentScreenState extends State<RentScreen> {
                         LoginB(text: Strings.kConfirm, style: kLoginButton),
                       );
                     }
-                ),
+                ) :
+                InActiveLoginB(text: Strings.kConfirm, style: kLoginButton,),
                 SizedBox(height: 25.h,),
               ],
             ),

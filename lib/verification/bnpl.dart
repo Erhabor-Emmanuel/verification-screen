@@ -1,8 +1,11 @@
+
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../common_widgets/LoginButton.dart';
+import '../common_widgets/inactiveButton.dart';
 import '../common_widgets/loginCircular.dart';
 import '../const/snackbar.dart';
 import '../const/strings.dart';
@@ -35,14 +38,13 @@ class _BnplScreenState extends State<BnplScreen> {
   final VerificationRepo _repository = VerificationRepo();
   TextEditingController _clientAddressController = TextEditingController();
   bool enable = false;
+  bool workingOne = false;
+  bool workingTwo = false;
+  bool workingThree = false;
+  bool enablerOne = false;
+  bool enablerTwo = false;
+  bool enablerThree = false;
 
-
-
-  @override
-  void dispose() {
-    _clientAddressController;
-    super.dispose();
-  }
 
   bool _checkBox = false;
   String? auto;
@@ -56,6 +58,24 @@ class _BnplScreenState extends State<BnplScreen> {
   bool _checkBoxThree = false;
   bool _checkBoxTwo = false;
   bool _nextCheckBoxTwo = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final enable = _checkBoxOne == true && _checkBoxTwo == true && _checkBoxThree == true? true: false;
+    setState(() => this.enable = enable);
+
+  }
+
+
+
+  @override
+  void dispose() {
+    _clientAddressController;
+    super.dispose();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +131,7 @@ class _BnplScreenState extends State<BnplScreen> {
                                     setState(() {
                                       _checkBoxThree = value;
                                       autoThree = 'Yes';
+                                      workingOne = true;
                                     });
                                   }
                                 },
@@ -144,6 +165,7 @@ class _BnplScreenState extends State<BnplScreen> {
                                     setState(() {
                                       _nextCheckBoxThree = value;
                                       autoThree = 'No';
+                                      enablerOne = true;
                                     });
                                   }
                                 },
@@ -212,6 +234,7 @@ class _BnplScreenState extends State<BnplScreen> {
                                     setState(() {
                                       _checkBoxOne = value;
                                       autoOne = 'Yes';
+                                      workingTwo = true;
                                     });
                                   }
                                 },
@@ -245,6 +268,7 @@ class _BnplScreenState extends State<BnplScreen> {
                                     setState(() {
                                       _nextCheckBoxOne = value;
                                       autoOne = 'No';
+                                      enablerTwo = true;
                                     });
                                   }
                                 },
@@ -286,6 +310,7 @@ class _BnplScreenState extends State<BnplScreen> {
                                     setState(() {
                                       _checkBoxTwo = value;
                                       autoTwo = 'Yes';
+                                      workingThree = true;
                                     });
                                   }
                                 },
@@ -319,6 +344,7 @@ class _BnplScreenState extends State<BnplScreen> {
                                     setState(() {
                                       _nextCheckBoxTwo = value;
                                       autoTwo = 'No';
+                                      enablerThree = true;
                                     });
                                   }
                                 },
@@ -331,7 +357,7 @@ class _BnplScreenState extends State<BnplScreen> {
                   ],
                 ),
                 SizedBox(height: 25.h,),
-                Consumer<VerificationRepo>(
+                (autoOne != null && autoTwo != null && autoThree != null)? Consumer<VerificationRepo>(
                     builder: (context, verify, child) {
                       return GestureDetector(
                         onTap: ()async{
@@ -356,7 +382,8 @@ class _BnplScreenState extends State<BnplScreen> {
                         LoginB(text: Strings.kConfirm, style: kLoginButton),
                       );
                     }
-                ),
+                ) :
+                InActiveLoginB(text: Strings.kConfirm, style: kLoginButton,),
                 SizedBox(height: 25.h,),
               ],
             ),
@@ -366,3 +393,6 @@ class _BnplScreenState extends State<BnplScreen> {
     );
   }
 }
+
+
+// (_checkBoxOne == true  && _checkBoxTwo == true && _checkBoxThree == true && _nextCheckBoxOne == false && _nextCheckBoxTwo == false && _nextCheckBoxThree == false || _nextCheckBoxOne == true && _nextCheckBoxTwo == true && _nextCheckBoxThree == true && _checkBoxOne == false  && _checkBoxTwo == false && _checkBoxThree == false)

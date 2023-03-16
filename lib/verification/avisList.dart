@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verification/verification/rent.dart';
@@ -62,7 +63,7 @@ class _AvisListState extends State<AvisList> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height -100.h,
+                  height: MediaQuery.of(context).size.height,
                   child: FutureBuilder<AvisListModel>(
                     future: _repository.getAvisList(),
                       builder: (context, snapshot){
@@ -88,78 +89,88 @@ class _AvisListState extends State<AvisList> {
                               debugPrint('vertical==========> $vertical');
                               debugPrint('verified==========> $verified');
                               debugPrint('ShopName==========> ${bg['shop_name']}');
-                              return Stack(
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.height,
-                                    child: Card(
-                                      elevation: 0.0,
-                                      color: kWhite,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12.r)
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left: 10.r, right: 10.r, top: 20.r),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text('Name: ', style: kFirstTN,),
-                                                Text('${bg['full_name']}', style: kFirstN,),
-                                              ],
-                                            ),
-                                            SizedBox(height: 6.h,),
-                                            Row(
-                                              children: [
-                                                Text('Phone no: ', style: kFirstTN,),
-                                                Text('${listed?.agentPhone}', style: kFirstN,),
-                                              ],
-                                            ),
-                                            SizedBox(height: 6.h,),
-                                            Row(
-                                              children: [
-                                                Text('Date: ', style: kFirstTN,),
-                                                Text('$createdAt', style: kFirstN,),
-                                              ],
-                                            ),
-                                            SizedBox(height: 10.h,),
-                                            listed?.verified == '0'? GestureDetector(
-                                              onTap: (){
-                                                if(verified == '0' && vertical=='merchant'){
-                                                  Navigator.push(context, MaterialPageRoute(builder: (builder)=> MerchantScreen(avsId: '$avisId',)));
-                                                }else if(verified == '0' && vertical=='rent-renewal'){
-                                                  Navigator.push(context, MaterialPageRoute(builder: (builder)=> RentRenewalScreen(avsId: '$avisId',)));
-                                                }else if(verified == '0' && vertical=='rent-acquisition'){
-                                                  Navigator.push(context, MaterialPageRoute(builder: (builder)=> RentScreen(avsId: '$avisId',)));
-                                                }else if(verified == '0' && vertical=='bnpl'){
-                                                  Navigator.push(context, MaterialPageRoute(builder: (builder)=> BnplScreen(avsId: '$avisId',)));
-                                                }
-                                              },
-                                                child: Center(child: ShortLoginB(text: 'Verify now', style: kLoginButton,))) :
-                                            const Text(''),
-                                            listed?.verified == '0'? SizedBox(height: 15.h,) : SizedBox(height: 0.h,),
-                                          ],
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Stack(
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.height -10,
+                                      child: Card(
+                                        elevation: 0.0,
+                                        color: kWhite,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(12.r)
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: 10.r, right: 10.r, top: 20.r),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text('Name: ', style: kFirstTN,),
+                                                  bg['full_name'] == null? Text('${bg['name']}', style: kFirstN,) : Text('${bg['full_name']}', style: kFirstN,),
+                                                ],
+                                              ),
+                                              SizedBox(height: 6.h,),
+                                              Row(
+                                                children: [
+                                                  Text('Phone no: ', style: kFirstTN,),
+                                                  bg['phone'] == null? Text('${bg['phone_no']}', style: kFirstN,) : Text('${bg['phone']}', style: kFirstN,),
+                                                ],
+                                              ),
+                                              SizedBox(height: 6.h,),
+                                              Row(
+                                                children: [
+                                                  Text('Address: ', style: kFirstTN,),
+                                                  Expanded(child: AutoSizeText('${bg['address']}', style: kFirstN, overflow: TextOverflow.clip, maxLines: 2,)),
+                                                ],
+                                              ),
+                                              SizedBox(height: 6.h,),
+                                              Row(
+                                                children: [
+                                                  Text('Date: ', style: kFirstTN,),
+                                                  Text('$createdAt', style: kFirstN,),
+                                                ],
+                                              ),
+                                              SizedBox(height: 10.h,),
+                                              listed?.verified == '0'? GestureDetector(
+                                                onTap: (){
+                                                  if(verified == '0' && vertical=='merchant'){
+                                                    Navigator.push(context, MaterialPageRoute(builder: (builder)=> MerchantScreen(avsId: '$avisId',)));
+                                                  }else if(verified == '0' && vertical=='rent-renewal'){
+                                                    Navigator.push(context, MaterialPageRoute(builder: (builder)=> RentRenewalScreen(avsId: '$avisId',)));
+                                                  }else if(verified == '0' && vertical=='rent-acquisition'){
+                                                    Navigator.push(context, MaterialPageRoute(builder: (builder)=> RentScreen(avsId: '$avisId',)));
+                                                  }else if(verified == '0' && vertical=='bnpl'){
+                                                    Navigator.push(context, MaterialPageRoute(builder: (builder)=> BnplScreen(avsId: '$avisId',)));
+                                                  }
+                                                },
+                                                  child: Center(child: ShortLoginB(text: 'Verify now', style: kLoginButton,))) :
+                                              const Text(''),
+                                              listed?.verified == '0'? SizedBox(height: 15.h,) : SizedBox(height: 0.h,),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Positioned(
-                                    top: 6,
-                                    right: 8,
-                                    child: Container(
-                                      height: 20.h,
-                                      decoration: BoxDecoration(
-                                        color: listed?.verified == '0'? kLogout : kSafeGreen,
-                                        borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                                    Positioned(
+                                      top: 6,
+                                      right: 8,
+                                      child: Container(
+                                        height: 20.h,
+                                        decoration: BoxDecoration(
+                                          color: listed?.verified == '0'? kLogout : kSafeGreen,
+                                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: listed?.verified == '0'? Center(child: Text(' not verified ', style: kFirstN,)) : Center(child: Text(' verified ', style: kFirstN,)),
+                                        ),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: listed?.verified == '0'? Center(child: Text(' not verified ', style: kFirstN,)) : Center(child: Text(' verified ', style: kFirstN,)),
-                                      ),
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               );
                               }
                           );
@@ -182,59 +193,7 @@ class _AvisListState extends State<AvisList> {
                       }
                   ),
                 ),
-                // Stack(
-                //   children: [
-                //     SizedBox(
-                //       width: MediaQuery.of(context).size.height,
-                //       child: Card(
-                //         elevation: 0.0,
-                //         color: kWhite,
-                //         shape: RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.circular(12.r)
-                //         ),
-                //         child: Padding(
-                //           padding: EdgeInsets.only(left: 10.r, right: 10.r, top: 10.r),
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               Row(
-                //                 children: [
-                //                   Text('Agent Name: ', style: kFirstTN,),
-                //                   Text('kola wole', style: kFirstN,),
-                //                 ],
-                //               ),
-                //               SizedBox(height: 10.h,),
-                //               Row(
-                //                 children: [
-                //                   Text('Phone no: ', style: kFirstTN,),
-                //                   Text('08097778655', style: kFirstN,),
-                //                 ],
-                //               ),
-                //               SizedBox(height: 10.h,),
-                //               Center(child: ShortLoginB(text: 'Verify now', style: kLoginButton,)),
-                //               SizedBox(height: 15.h,),
-                //             ],
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //     Positioned(
-                //       top: 6,
-                //         right: 8,
-                //         child: Container(
-                //           height: 20.h,
-                //           decoration: BoxDecoration(
-                //             color: kLogout,
-                //             borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                //           ),
-                //           child: Padding(
-                //             padding: const EdgeInsets.all(4.0),
-                //             child: Center(child: Text(' not verified ', style: kFirstN,)),
-                //           ),
-                //         ),
-                //     )
-                //   ],
-                // ),
+                SizedBox(height: 20.h,)
               ],
             ),
           ),
